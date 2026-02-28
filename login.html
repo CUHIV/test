@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Form</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 15px rgba(102, 126, 234, 0.6);
+            }
+        }
+
+        @keyframes buttonPulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+            }
+            50% {
+                box-shadow: 0 8px 25px rgba(102, 126, 234, 0.7);
+            }
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 400px;
+            animation: slideDown 0.6s ease-out;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 28px;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-out backwards;
+        }
+
+        .form-group:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .form-group:nth-child(3) {
+            animation-delay: 0.4s;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: bold;
+            font-size: 14px;
+            transition: color 0.3s ease;
+        }
+
+        input[type="email"],
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        input[type="email"]:focus,
+        input[type="text"]:focus,
+        input[type="password"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 5px rgba(102, 126, 234, 0.3);
+            animation: pulse 1.5s ease-in-out infinite;
+            transform: scale(1.02);
+        }
+
+        input[type="email"].filled,
+        input[type="text"].filled,
+        input[type="password"].filled {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.05);
+        }
+
+        input[type="email"].error {
+            border-color: #ff4757;
+            background: rgba(255, 71, 87, 0.05);
+        }
+
+        input[type="email"].error:focus {
+            box-shadow: 0 0 5px rgba(255, 71, 87, 0.3);
+        }
+
+        input[type="email"].success {
+            border-color: #2ed573;
+            background: rgba(46, 213, 115, 0.05);
+        }
+
+        .error-message {
+            color: #ff4757;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .success-message {
+            color: #2ed573;
+            font-size: 12px;
+            margin-top: 5px;
+            display: none;
+            animation: slideDown 0.3s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+
+        label.active {
+            color: #667eea;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+            animation: fadeIn 1.2s ease-out backwards;
+            animation-delay: 0.6s;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            animation: buttonPulse 0.6s ease-in-out infinite;
+        }
+
+        button:active {
+            transform: translateY(0);
+        }
+
+        button.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        button.loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            margin: -8px 0 0 -8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <h1>Login</h1>
+        <form>
+            <div class="form-group">
+                <label for="username">Email</label>
+                <input type="email" id="username" name="username" placeholder="example@domain.com" required>
+                <div class="error-message" id="emailError">Email must end with .com</div>
+                <div class="success-message" id="emailSuccess">✓ Valid email</div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+
+    <script>
+        const username = document.getElementById('username');
+        const password = document.getElementById('password');
+        const userLabel = document.querySelector('label[for="username"]');
+        const passLabel = document.querySelector('label[for="password"]');
+        const form = document.querySelector('form');
+        const button = document.querySelector('button');
+
+        // Input focus/blur animations
+        username.addEventListener('focus', () => {
+            userLabel.classList.add('active');
+        });
+
+        username.addEventListener('blur', () => {
+            if (!username.value) {
+                userLabel.classList.remove('active');
+            }
+        });
+
+        password.addEventListener('focus', () => {
+            passLabel.classList.add('active');
+        });
+
+        password.addEventListener('blur', () => {
+            if (!password.value) {
+                passLabel.classList.remove('active');
+            }
+        });
+
+        // Email validation for .com domain
+        const emailError = document.getElementById('emailError');
+        const emailSuccess = document.getElementById('emailSuccess');
+
+        username.addEventListener('input', () => {
+            const email = username.value.trim();
+            
+            if (email) {
+                username.classList.add('filled');
+                userLabel.classList.add('active');
+                
+                // Check if email ends with .com
+                if (email.endsWith('.com') && email.includes('@')) {
+                    username.classList.remove('error');
+                    username.classList.add('success');
+                    emailError.classList.remove('show');
+                    emailSuccess.classList.add('show');
+                } else if (email.includes('@')) {
+                    username.classList.remove('success');
+                    username.classList.add('error');
+                    emailError.classList.add('show');
+                    emailSuccess.classList.remove('show');
+                } else {
+                    username.classList.remove('error', 'success');
+                    emailError.classList.remove('show');
+                    emailSuccess.classList.remove('show');
+                }
+            } else {
+                username.classList.remove('filled', 'error', 'success');
+                userLabel.classList.remove('active');
+                emailError.classList.remove('show');
+                emailSuccess.classList.remove('show');
+            }
+        });
+
+        password.addEventListener('input', () => {
+            if (password.value) {
+                password.classList.add('filled');
+                passLabel.classList.add('active');
+            } else {
+                password.classList.remove('filled');
+                passLabel.classList.remove('active');
+            }
+        });
+
+        // Form submission with validation
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const email = username.value.trim();
+            
+            // Validate email ends with .com
+            if (!email.endsWith('.com') || !email.includes('@')) {
+                username.classList.add('error');
+                emailError.classList.add('show');
+                return;
+            }
+            
+            button.classList.add('loading');
+            button.textContent = '';
+            
+            // Simulate loading for 2 seconds
+            setTimeout(() => {
+                button.classList.remove('loading');
+                button.textContent = 'Login';
+                alert(`Welcome ${email}!`);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
